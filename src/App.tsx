@@ -61,6 +61,13 @@ function App() {
   const [stats, setStats] = useState(() => loadStats())
 
   useEffect(() => {
+    if (localStorage.getItem('hasPlayed') !== 'true') {
+      setIsInfoModalOpen(true)
+      localStorage.setItem('hasPlayed', 'true')
+    }
+  }, [])
+
+  useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark')
     } else {
@@ -95,20 +102,37 @@ function App() {
   }, [isGameWon, isGameLost])
 
   const onChar = (value: string) => {
-    if (currentGuess.length < 5 && guesses.length < 6 && !isGameWon) {
+    var guess: string = ''
+    currentGuess.split('').forEach((letter, _) => {
+      if (letter !== 'h') {
+        guess += letter
+      }
+    })
+
+    if (guess.length < 5 && guesses.length < 6 && !isGameWon) {
       setCurrentGuess(`${currentGuess}${value}`)
     }
   }
 
   const onDelete = () => {
-    setCurrentGuess(currentGuess.slice(0, -1))
+    if (currentGuess[currentGuess.length - 1] === 'h') {
+      setCurrentGuess(currentGuess.slice(0, -2))
+    } else {
+      setCurrentGuess(currentGuess.slice(0, -1))
+    }
   }
 
   const onEnter = () => {
     if (isGameWon || isGameLost) {
       return
     }
-    if (!(currentGuess.length === 5)) {
+    var guess: string = ''
+    currentGuess.split('').forEach((letter, _) => {
+      if (letter !== 'h') {
+        guess += letter
+      }
+    })
+    if (!(guess.length === 5)) {
       setIsNotEnoughLetters(true)
       return setTimeout(() => {
         setIsNotEnoughLetters(false)
@@ -124,7 +148,7 @@ function App() {
 
     const winningWord = isWinningWord(currentGuess)
 
-    if (currentGuess.length === 5 && guesses.length < 6 && !isGameWon) {
+    if (guess.length === 5 && guesses.length < 6 && !isGameWon) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
 
@@ -143,7 +167,9 @@ function App() {
   return (
     <div className="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div className="flex w-80 mx-auto items-center mb-8">
-        <h1 className="text-xl grow font-bold dark:text-white">Not Wordle</h1>
+        <h1 className="text-xl grow font-bold dark:text-white">
+          Somali Wordle
+        </h1>
         <SunIcon
           className="h-6 w-6 cursor-pointer dark:stroke-white"
           onClick={() => handleDarkMode(!isDarkMode)}
@@ -190,12 +216,21 @@ function App() {
         className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
         onClick={() => setIsAboutModalOpen(true)}
       >
-        About this game
+        Waxaan waa maxay?
       </button>
 
-      <Alert message="Not enough letters" isOpen={isNotEnoughLetters} />
-      <Alert message="Word not found" isOpen={isWordNotFoundAlertOpen} />
-      <Alert message={`The word was ${solution}`} isOpen={isGameLost} />
+      <Alert
+        message="Xarfo ku filan ereyga maad isticmaalin"
+        isOpen={isNotEnoughLetters}
+      />
+      <Alert
+        message="Eryegaan qaamuuskeena kuma jiro"
+        isOpen={isWordNotFoundAlertOpen}
+      />
+      <Alert
+        message={`Ereyga qarsoon wuxuu ahaa ${solution}`}
+        isOpen={isGameLost}
+      />
       <Alert
         message={successAlert}
         isOpen={successAlert !== ''}

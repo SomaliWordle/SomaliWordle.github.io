@@ -20,6 +20,6 @@ beforeEach(() => {
 
 test('renders App component', () => {
   render(<App />)
-  const linkElement = screen.getByText(/Not Wordle/)
+  const linkElement = screen.getByText(/Somali Wordle/)
   expect(linkElement).toBeInTheDocument()
 })

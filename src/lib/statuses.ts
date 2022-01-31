@@ -12,7 +12,7 @@ export type CharValue =
   | 'U'
   | 'I'
   | 'O'
-  | 'P'
+  | 'Kh'
   | 'A'
   | 'S'
   | 'D'
@@ -22,10 +22,10 @@ export type CharValue =
   | 'J'
   | 'K'
   | 'L'
-  | 'Z'
+  | 'Dh'
   | 'X'
   | 'C'
-  | 'V'
+  | 'Sh'
   | 'B'
   | 'N'
   | 'M'
@@ -37,6 +37,20 @@ export const getStatuses = (
 
   guesses.forEach((word) => {
     word.split('').forEach((letter, i) => {
+      if ((letter === "D" || letter === "S" || letter === "K") && (word[i + 1] === "h")) {
+        if (solution[i] === letter && solution[i + 1] === "H") {
+          return (charObj[letter + "h"] = 'correct')
+        }
+
+        if (!solution.includes(letter + "H")) {
+          return (charObj[letter + "h"] = 'absent')
+        }
+
+        if (charObj[letter + "h"] !== 'correct') {
+          return (charObj[letter] = 'present')
+        }
+      }
+
       if (!solution.includes(letter)) {
         // make status absent
         return (charObj[letter] = 'absent')
@@ -58,15 +72,19 @@ export const getStatuses = (
 }
 
 export const getGuessStatuses = (guess: string): CharStatus[] => {
-  const splitSolution = solution.split('')
-  const splitGuess = guess.split('')
+  const splitSolution: string[] = []
+  Array.from(solution.matchAll(/[A-Z]H?/g)).forEach((value) => {
+    splitSolution.push(value[0])
+  })
+  const splitGuess = Array.from(guess.matchAll(/[A-Z]h?/g))
 
   const solutionCharsTaken = splitSolution.map((_) => false)
 
   const statuses: CharStatus[] = Array.from(Array(guess.length))
 
   // handle all correct cases first
-  splitGuess.forEach((letter, i) => {
+  splitGuess.forEach((match, i) => {
+    var letter = match[0].toUpperCase()
     if (letter === splitSolution[i]) {
       statuses[i] = 'correct'
       solutionCharsTaken[i] = true
@@ -74,7 +92,8 @@ export const getGuessStatuses = (guess: string): CharStatus[] => {
     }
   })
 
-  splitGuess.forEach((letter, i) => {
+  splitGuess.forEach((match, i) => {
+    var letter = match[0].toUpperCase()
     if (statuses[i]) return
 
     if (!splitSolution.includes(letter)) {

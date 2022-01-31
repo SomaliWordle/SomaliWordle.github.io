@@ -20,10 +20,16 @@ const StatItem = ({
 }
 
 export const StatBar = ({ gameStats }: Props) => {
+  var tries = ""
+  if (gameStats.totalGames > 1) {
+    tries = "Tijaabood"
+  } else {
+    tries = "Tijaabo"
+  }
   return (
     <div className="flex justify-center my-2">
-      <StatItem label="Total tries" value={gameStats.totalGames} />
-      <StatItem label="Success rate" value={`${gameStats.successRate}%`} />
+      <StatItem label={tries} value={gameStats.totalGames} />
+      <StatItem label="Guushaada" value={`${gameStats.successRate}%`} />
       <StatItem label="Current streak" value={gameStats.currentStreak} />
       <StatItem label="Best streak" value={gameStats.bestStreak} />
     </div>
