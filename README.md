@@ -7,7 +7,7 @@
 
 _Sawabtaan u sameeyey:_
 
-Waxaan soo ogaadey iney dadka kale luuqadahood u yeeleen gaymkaan, marka waxaa is dhahay "anba luuqadey maa u yeelo?" - sidaas daraadeed, websitekaan oo intiisa badan dad kale so sameeyeen (https://github.com/cwackerfuss/react-wordle), baa af-soomaali u soo badalay.
+Waxaan soo ogaadey iney dadka kale luuqadahood u yeeleen gaymkaan, marka waxaa is dhahay "anba luuqadey maa u yeelo?" - sidaas darteed, websaytkaan oo intiisa badan dad kale so sameeyeen (https://github.com/cwackerfuss/react-wordle), baa af-soomaali u soo badalay.
 
 Websityada aan arkay, waxaa ka mid ahaa:
 
